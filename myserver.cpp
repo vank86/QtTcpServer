@@ -55,7 +55,8 @@ void MyServer::slotReadyRead()
                     break;
                 }
                 QString str;
-                in >> str;
+                QTime time;
+                in >> time >> str;
                 nextBlockSize = 0;
                 qDebug() << str;
                 sendToClient(str);
@@ -74,7 +75,7 @@ void MyServer::sendToClient(QString str)
     Data.clear();
     QDataStream out(&Data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_3);
-    out << quint16(0) << str;
+    out << quint16(0) << QTime::currentTime()<< str;
     out.device()->seek(0);
     out << quint16(Data.size() - sizeof(quint16));
 //    socket->write(Data);
